@@ -6,29 +6,27 @@ if(!isset($_SESSION['user'])) {
     exit;
 }
 //recupero precio y nombre
-$price = '';
-$name = '';
-if(isset($_SESSION['old']['name'])) {
-    $name = $_SESSION['old']['name'];
-    unset($_SESSION['old']['name']);
-}
-if(isset($_SESSION['old']['price'])) {
-    $price = $_SESSION['old']['price'];
-    unset($_SESSION['old']['price']);
-}
+
+$nombre = isset($_SESSION['old']['nombre']) ? $_SESSION['old']['nombre'] : '';
+$peso = isset($_SESSION['old']['peso']) ? $_SESSION['old']['peso'] : '';
+$altura = isset($_SESSION['old']['altura']) ? $_SESSION['old']['altura'] : '';
+$tipo = isset($_SESSION['old']['tipo']) ? $_SESSION['old']['tipo'] : '';
+$numero_evoluciones = isset($_SESSION['old']['numero_evoluciones']) ? $_SESSION['old']['numero_evoluciones'] : '';
+
+unset($_SESSION['old']);
+
 //establecer conexión bd
 try {
     $connection = new \PDO(
-      'mysql:host=localhost;dbname=productdatabase',
-      'productuser',
-      'productpassword',
+      'mysql:host=localhost;dbname=pokemon_database',
+      'pokemon_user',
+      'pokemon_password',
       array(
         PDO::ATTR_PERSISTENT => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
     );
 } catch(PDOException $e) {
-    //echo 'no connection';
-    header('Location: .'); // habría que dar explicaciones
+    echo 'no connection';
     exit;
 }
 
@@ -40,7 +38,7 @@ try {
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
-    $url = '.?op=editproduct&result=noid';
+    $url = '.?op=editpokemon&result=noid';
     header('Location: ' . $url);
     exit;
 }
@@ -61,7 +59,7 @@ if(($user === 'even' && $id  % 2 != 0)
 
 
 
-$sql = 'select * from product where id = :id';
+$sql = 'select * from pokemon where id = :id';
 $sentence = $connection->prepare($sql);
 $parameters = ['id' => $id];
 foreach($parameters as $nombreParametro => $valorParametro) {
@@ -75,13 +73,26 @@ if(!$fila = $sentence->fetch()) {
 }
 
 $id = $fila['id'];
-if($name == '') {
-    $name = $fila['name'];
+if($nombre == '') {
+    $nombre = $fila['nombre'];
 }
-if($price == '') {
-    $price = $fila['price'];
+if($peso == '') {
+    $peso = $fila['peso'];
+}
+if($altura == '') {
+    $altura = $fila['altura'];
+}
+if($tipo == '') {
+    $tipo = $fila['tipo'];
+}
+if($numero_evoluciones == '') {
+    $numero_evoluciones = $fila['numero_evoluciones'];
 }
 $connection = null;
+
+
+
+
 ?>
 <!doctype html>
 <html>
@@ -102,10 +113,10 @@ $connection = null;
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">product</a>
+                        <a class="nav-link" href="../product">product</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="../pokemon">pokemon</a>
+                        <a class="nav-link" href="./">pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -136,15 +147,38 @@ $connection = null;
                 ?>
                 <div>
                     <form action="update.php" method="post">
-                        <div class="form-group">
-                            <label for="name">product name</label>
-                            <input value="<?= $name ?>" required type="text" class="form-control" id="name" name="name" placeholder="product name">
+                    <input type="hidden" name="id" value="<?= $id ?>" />
+
+                    <div class="form-group">
+                            <label for="nombre">Pokemon name</label>
+                            <input value="<?= $nombre ?>" required type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
                         </div>
                         <div class="form-group">
-                            <label for="price">product price</label>
-                            <input value="<?= $price ?>" required type="number" step="0.001" class="form-control" id="price" name="price" placeholder="product price">
+                            <label for="peso">Peso</label>
+                            <input value="<?= $peso ?>" required type="number" step="0.001" class="form-control" id="peso" name="peso" placeholder="Peso">
+                        </div>
+                        <div class="form-group">
+                            <label for="altura">Altura </label>
+                            <input value="<?= $altura ?>" required type="text" class="form-control" id="altura" name="altura" placeholder="Altura">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo">Tipo</label>
+                                <select required class="form-control" id="tipo" name="tipo" placeholder="Tipo">
+                                    <option value="Fuego" <?= $tipo === 'Fuego' ? 'selected' : '' ?>>Fuego</option>
+                                    <option value="Agua" <?= $tipo === 'Agua' ? 'selected' : '' ?>>Agua</option>
+                                    <option value="Planta" <?= $tipo === 'Planta' ? 'selected' : '' ?>>Planta</option>
+                                    <option value="Eléctrico" <?= $tipo === 'Eléctrico' ? 'selected' : '' ?>>Eléctrico</option>
+                                </select>                        
+                        </div>
+                        <div class="form-group">
+                            <label for="numero_evoluciones">Evoluciones</label>
+                            <input value="<?= $numero_evoluciones ?>" required type="number" class="form-control" id="numero_evoluciones" name="numero_evoluciones" placeholder="Evoluciones ">
                         </div>
                         <input type="hidden" name="id" value="<?= $id ?>" />
+                       
+
+
+
                         <button type="submit" class="btn btn-primary">edit</button>
                     </form>
                 </div>

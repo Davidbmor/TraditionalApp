@@ -1,9 +1,9 @@
 <?php
 try {
-    $connection = new \PDO(
-      'mysql:host=localhost;dbname=productdatabase',
-      'productuser',
-      'productpassword',
+    $connection = new PDO(
+      'mysql:host=localhost;dbname=pokemon_database',
+      'pokemon_user',
+      'pokemon_password',
       array(
         PDO::ATTR_PERSISTENT => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
@@ -12,13 +12,17 @@ try {
     echo 'no connection';
     exit;
 }
+
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
     echo 'no id';
     exit;
 }
-$sql = 'select * from product where id = :id';
+
+
+
+$sql = 'select * from pokemon where id = :id';
 $sentence = $connection->prepare($sql);
 $parameters = ['id' => $id];
 foreach($parameters as $nombreParametro => $valorParametro) {
@@ -54,34 +58,45 @@ $connection = null;
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">product</a>
+                        <a class="nav-link" href="../product">product</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="../pokemon">pokemon</a>
+                        <a class="nav-link" href="./">pokemon</a>
                     </li>
                 </ul>
             </div>
-        </nav>iv>
         </nav>
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">products</h4>
+                    <h4 class="display-4">Pokémon</h4>
                 </div>
             </div>
             <div class="container">
                 <div>
                     <div class="form-group">
-                        product id #:
+                        id #:
                         <?= $fila['id'] ?>
                     </div>
                     <div class="form-group">
-                        product name:
-                        <?= $fila['name'] ?>
+                        nombre:
+                        <?= $fila['nombre'] ?>
                     </div>
                     <div class="form-group">
-                        product price:
-                        <?= $fila['price'] ?>
+                        peso:
+                        <?= $fila['peso'] ?>
+                    </div>
+                    <div class="form-group">
+                        altura:
+                        <?= $fila['altura'] ?>
+                    </div>
+                    <div class="form-group">
+                        tipo:
+                        <?= $fila['tipo'] ?>
+                    </div>
+                    <div class="form-group">
+                        numero de evoluciones:
+                        <?= $fila['numero_evoluciones'] ?>
                     </div>
                     <div class="form-group">
                         <a href="./">back</a>

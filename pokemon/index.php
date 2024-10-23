@@ -12,9 +12,9 @@ if(isset($_SESSION['user'])) {
 
 try {
     $connection = new PDO(
-      'mysql:host=localhost;dbname=productdatabase',
-      'productuser',
-      'productpassword',
+      'mysql:host=localhost;dbname=pokemon_database',
+      'pokemon_user',
+      'pokemon_password',
       array(
         PDO::ATTR_PERSISTENT => true,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8')
@@ -24,7 +24,7 @@ try {
     exit;
 }
 //sentencia preparada: engendro ideado para evitar inyecciones sql
-$sql = 'select * from product order by name, id';
+$sql = 'select * from pokemon order by nombre, id';
 try {
     $sentence = $connection->prepare($sql);
     if(!$sentence->execute()) {
@@ -55,10 +55,10 @@ try {
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">product</a>
+                        <a class="nav-link" href="../product">product</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="../pokemon">pokemon</a>
+                        <a class="nav-link" href="./">pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -66,7 +66,7 @@ try {
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">products</h4>
+                    <h4 class="display-4">Pokémon</h4>
                 </div>
             </div>
             <div class="container">
@@ -88,14 +88,17 @@ try {
                 }
                 ?>
                 <div class="row">
-                    <h3>product list</h3>
+                    <h3>pokemon list</h3>
                 </div>
                 <table class="table table-striped table-hover" id="tablaProducto">
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>name</th>
-                            <th>price</th>
+                            <th>nombre</th>
+                            <th>peso</th>
+                            <th>altura</th>
+                            <th>tipo</th>
+                            <th>numero_evoluciones</th>
                             <?php
                             if(isset($_SESSION['user'])) {
                                 ?>
@@ -113,8 +116,11 @@ try {
                                 ?>
                                 <tr >
                                     <td><?php echo $fila['id']; ?></td>
-                                    <td><?= $fila['name']; ?></td>
-                                    <td><?= $fila['price']; ?></td>
+                                    <td><?= $fila['nombre']; ?></td>
+                                    <td><?= $fila['peso']; ?></td>
+                                    <td><?= $fila['altura']; ?></td>
+                                    <td><?= $fila['tipo']; ?></td>
+                                    <td><?= $fila['numero_evoluciones']; ?></td>
                                     <?php	
                                     //if(isset($_SESSION['user'])) {
                                     if(($user === 'even' && $fila['id']%2 == 0) || 
@@ -136,7 +142,7 @@ try {
                     <?php
                     if(isset($_SESSION['user'])) {
                         ?>
-                        <a href="create.php" class="btn btn-success">add product</a>
+                        <a href="../pokemon/create.php" class="btn btn-success">add pokemon</a>
                         <?php
                     }
                     ?>

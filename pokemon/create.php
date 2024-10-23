@@ -5,17 +5,20 @@ if(!isset($_SESSION['user'])) {
     header('.');
     exit;
 }
-//lectura de datos
-$price = '';
-$name = '';
-if(isset($_SESSION['old']['name'])) {
-    $name = $_SESSION['old']['name'];
-    unset($_SESSION['old']['name']);
-}
-if(isset($_SESSION['old']['price'])) {
-    $price = $_SESSION['old']['price'];
-    unset($_SESSION['old']['price']);
-}
+
+//Recupera los datos de la sesion anterior en caso de que haya salido algo mal
+
+$nombre = isset($_SESSION['old']['nombre']) ? $_SESSION['old']['nombre'] : '';
+$peso = isset($_SESSION['old']['peso']) ? $_SESSION['old']['peso'] : '';
+$altura = isset($_SESSION['old']['altura']) ? $_SESSION['old']['altura'] : '';
+$tipo = isset($_SESSION['old']['tipo']) ? $_SESSION['old']['tipo'] : '';
+$numero_evoluciones = isset($_SESSION['old']['numero_evoluciones']) ? $_SESSION['old']['numero_evoluciones'] : '';
+
+unset($_SESSION['old']);
+
+
+
+
 ?>
 <!doctype html>
 <html>
@@ -36,10 +39,10 @@ if(isset($_SESSION['old']['price'])) {
                         <a class="nav-link" href="..">home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./">product</a>
+                        <a class="nav-link" href="../product">product</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="../pokemon">pokemon</a>
+                        <a class="nav-link" href="./">pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +50,7 @@ if(isset($_SESSION['old']['price'])) {
         <main role="main">
             <div class="jumbotron">
                 <div class="container">
-                    <h4 class="display-4">products</h4>
+                    <h4 class="display-4">Pokemon</h4>
                 </div>
             </div>
             <div class="container">
@@ -64,13 +67,31 @@ if(isset($_SESSION['old']['price'])) {
                 <div>
                     <form action="store.php" method="post">
                         <div class="form-group">
-                            <label for="name">product name</label>
-                            <input value="<?= $name ?>" required type="text" class="form-control" id="name" name="name" placeholder="product name">
+                            <label for="nombre">Nombre</label>
+                            <input value="<?= $nombre ?>" required type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
                         </div>
                         <div class="form-group">
-                            <label for="price">product price</label>
-                            <input value="<?= $price ?>" required type="number" step="0.001" class="form-control" id="price" name="price" placeholder="product price">
+                            <label for="peso">Peso</label>
+                            <input value="<?= $peso ?>" required type="number" step="0.001" class="form-control" id="peso" name="peso" placeholder="Peso">
                         </div>
+                        <div class="form-group">
+                            <label for="altura">Altura </label>
+                            <input value="<?= $altura ?>" required type="text" class="form-control" id="altura" name="altura" placeholder="Altura">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo">Tipo</label>
+                                <select required class="form-control" id="tipo" name="tipo" placeholder="Tipo">
+                                    <option value="Fuego" <?= $tipo === 'Fuego' ? 'selected' : '' ?>>Fuego</option>
+                                    <option value="Agua" <?= $tipo === 'Agua' ? 'selected' : '' ?>>Agua</option>
+                                    <option value="Planta" <?= $tipo === 'Planta' ? 'selected' : '' ?>>Planta</option>
+                                    <option value="Eléctrico" <?= $tipo === 'Eléctrico' ? 'selected' : '' ?>>Eléctrico</option>
+                                </select>                        
+                        </div>
+                        <div class="form-group">
+                            <label for="numero_evoluciones">Evoluciones</label>
+                            <input value="<?= $numero_evoluciones ?>" required type="number" class="form-control" id="numero_evoluciones" name="numero_evoluciones" placeholder="Evoluciones ">
+                        </div>
+                        
                         <button type="submit" class="btn btn-primary">add</button>
                     </form>
                 </div>

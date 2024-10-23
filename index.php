@@ -1,6 +1,13 @@
 <?php
 session_start();
 ?>
+<style>
+
+li{
+    list-style: none;
+}
+
+</style>
 <!doctype html>
 <html>
     <head>
@@ -21,6 +28,10 @@ session_start();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./product">product</a>
+                       
+                    </li>
+                    <li>
+                    <a class="nav-link" href="./pokemon">pokemon</a>
                     </li>
                 </ul>
             </div>
@@ -52,12 +63,24 @@ session_start();
                         <?php
                     } else {
                         ?>
-                        <a href="user/login.php" class="btn btn-success">log in</a>
+                        <li>
+                            <a href="user/login.php?user=even" class="btn btn-success">even log in</a>
+                            <a href="user/login.php?user=odd" class="btn btn-success">odd log in</a>
+
+                        </li>
+                        
+                        
                         <?php
                     }
                     ?>
                     &nbsp;
+                    <li>
                     <a href="product" class="btn btn-success">products</a>
+                    <a href="pokemon" class="btn btn-success">pokemon</a>
+
+                    </li>
+                    
+
                 </div>
                 <hr>
             </div>
