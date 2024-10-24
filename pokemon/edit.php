@@ -32,8 +32,6 @@ try {
 
 
 
-
-
 //id es necesario
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -42,6 +40,7 @@ if(isset($_GET['id'])) {
     header('Location: ' . $url);
     exit;
 }
+
 
 
 //CONTROL 
@@ -147,8 +146,6 @@ $connection = null;
                 ?>
                 <div>
                     <form action="update.php" method="post">
-                    <input type="hidden" name="id" value="<?= $id ?>" />
-
                     <div class="form-group">
                             <label for="nombre">Pokemon name</label>
                             <input value="<?= $nombre ?>" required type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
@@ -175,10 +172,6 @@ $connection = null;
                             <input value="<?= $numero_evoluciones ?>" required type="number" class="form-control" id="numero_evoluciones" name="numero_evoluciones" placeholder="Evoluciones ">
                         </div>
                         <input type="hidden" name="id" value="<?= $id ?>" />
-                       
-
-
-
                         <button type="submit" class="btn btn-primary">edit</button>
                     </form>
                 </div>

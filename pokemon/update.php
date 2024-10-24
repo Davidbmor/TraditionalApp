@@ -67,14 +67,7 @@ if(isset($_POST['numero_evoluciones'])) {
     exit;
 }
 //debería meter la misma validación que antes en store.php
-$sql = 'UPDATE pokemon 
-        SET nombre = :nombre, 
-            peso = :peso, 
-            altura = :altura, 
-            tipo = :tipo, 
-            numero_evoluciones = :numero_evoluciones.
-        WHERE id = :id';
-
+$sql = 'update pokemon  set nombre = :nombre, peso = :peso, altura = :altura, tipo = :tipo, numero_evoluciones = :numero_evoluciones where id = :id';
 $sentence = $connection->prepare($sql);
     
 $parameters = [
